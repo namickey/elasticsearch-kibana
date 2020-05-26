@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    ports:
+      - 5601:5601
+
+volumes:
+  es-data:
+
+# https://registry.hub.docker.com/v1/repositories/elasticsearch/tags
+# https://registry.hub.docker.com/v1/repositories/kibana/tags
+# https://qiita.com/nobutaka/items/6308ea3bfd0aa0c58fdb
